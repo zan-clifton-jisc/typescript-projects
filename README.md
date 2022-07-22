@@ -1,6 +1,6 @@
 # TypeScript Projects
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=573A64&multiline=true&height=60&lines=Basic+TypeScript+Projects;Exploring+TypeScript+Fundamentals)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=0078d7&multiline=true&height=60&lines=Basic+TypeScript+Projects;Exploring+TypeScript+Fundamentals)](https://git.io/typing-svg)
 
 Resources and projects for learning and practicing typescript concepts
 
