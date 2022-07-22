@@ -1,0 +1,7 @@
+{
+  "include": ["ts-files/**/*"],
+  "compilerOptions": {
+    "target": "ES6",
+    "outDir": "compiled-js-files",
+  }
+}
