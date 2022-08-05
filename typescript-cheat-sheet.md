@@ -1,5 +1,15 @@
 # TypeScript Cheat Sheet
 
+### CONTENTS
+
+0. [TYPES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#0-types)
+1. [VARIABLES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#1-variables)
+2. [INTERFACES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#2-interfaces)
+3. [ENUMS](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#3-enums)
+4. [FUNCTIONS AND GENERICS](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#4-functions-and-generics)
+5. [SET UP](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#5-set-up)
+6. [CONFIGURATION - tsconfig.json](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#6-configuration---tsconfigjson)
+#
 ### 0: TYPES
 
 #### A: Primitive (JavaScript):
@@ -55,6 +65,14 @@ The compiler will find the first usage of the variable in the code, determine wh
 
 ```
 let name; // data type is 'any' and value is set to undefined by default
+```
+
+#### E: Casting a Variable as the Any Type
+
+```
+let age: number
+
+age = "Twenty One" as any
 ```
 
 #
@@ -175,11 +193,11 @@ Enums let you set a prescriptive number of responses as a type instead of accept
 
 ```
 enum LocalBranch {
-  Liverpool: "Liverpool", // 0 - If a value is not provided, as it is here...
-  Manchester: "Manchester", // 1 - TS will assign a number to each key starting at 0...
-  Newcastle: "Newcastle", // 2 - It will increment by 1 each time...
-  Sheffield: "Sheffield", // 3
-  York: "York" // 4 - And it will return that number by default
+  Liverpool = "Liverpool", // 0 - If a value is not provided, as it is here...
+  Manchester = "Manchester", // 1 - TS will assign a number to each key starting at 0...
+  Newcastle = "Newcastle", // 2 - It will increment by 1 each time...
+  Sheffield = "Sheffield", // 3
+  York = "York" // 4 - And it will return that number by default
 }
 
 interface Person {
@@ -202,7 +220,7 @@ let customer: Person = {
 
 #
 
-### 4: GENERICS
+### 4: FUNCTIONS AND GENERICS
 
 Generics decorate a component with a type syntax in such a way that it can describe a variety of types rather than only one.
 
@@ -218,7 +236,7 @@ function clone(source) {
 const cloned = clone(customer)
 ```
 
-#### B: A Bad Solution
+#### B: An Adequate Solution
 
 Specifying that the output type should be the same as the input type will certainly work, but limit its use to only one type.
 
@@ -252,6 +270,30 @@ function clone<T, U>(source: T, options: U) {...etc.
 
 **Can also be used on interfaces and classes!**
 
+#### E: Extends
+This accepts multiple generic type parameters, but also ensures that the return type at least matches the properties of the input. It doesn't literally derive from the first type; it only has to match it, and then add any other properties.
+  
+In this example, `Contact` and `UserContact` are totally separate, but happen to contain some of the same properties:
+```
+interface Contact {
+  id: number;
+  name: string;
+}
+  
+interface UserContact {
+  id: number;
+  name: string;
+  username: string;
+}
+  
+function clone<T1, T2 extends T1>(source: T1): T2 {
+  return Object.apply({}, source);
+}  
+  
+const a: Contact = {id: 123, name: "Homer Simpson" };
+const b: clone<Contact, UserContact>(a)
+```
+  
 #
 ### 5: SET UP
 [Official Installation Instructions](https://www.typescriptlang.org/download)
