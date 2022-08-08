@@ -2,13 +2,14 @@
 
 ### CONTENTS
 
-0. [TYPES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#0-types)
-1. [VARIABLES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#1-variables)
-2. [INTERFACES](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#2-interfaces)
-3. [ENUMS](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#3-enums)
-4. [FUNCTIONS AND GENERICS](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#4-functions-and-generics)
-5. [SET UP](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#5-set-up)
-6. [CONFIGURATION - tsconfig.json](https://github.com/zan-clifton-jisc/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#6-configuration---tsconfigjson)
+0. [TYPES](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#0-types)
+1. [VARIABLES](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#1-variables)
+2. [INTERFACES](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#2-interfaces)
+3. [ENUMS](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#3-enums)
+4. [FUNCTIONS AND GENERICS](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#4-functions-and-generics)
+5. [TYPE ALIASES](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#5-type-aliases)
+6. [SET UP](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#6-set-up)
+7. [CONFIGURATION - tsconfig.json](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#7-configuration---tsconfigjson)
 #
 ### 0: TYPES
 
@@ -293,9 +294,41 @@ function clone<T1, T2 extends T1>(source: T1): T2 {
 const a: Contact = {id: 123, name: "Homer Simpson" };
 const b: clone<Contact, UserContact>(a)
 ```
+
+### 5: TYPE ALIASES
+Using type aliases, two interfaces can be combined into a type that contains the information from both.
+
+```
+interface Contact {
+  id: number;
+  name: ContactName;
+  birthDate?: Date;
+  status?: ContactStatus;
+}
+
+interface Address {
+  line1: string;
+  line2: string;
+  province: string;
+  region: string;
+  postalCode: string;
+}
   
+```
+
+Enums add more code to your final output. Type aliases can also be used to cut that down. This is a another alternative to [literal values](https://github.com/ZanClifton/coding-cheat-sheets/blob/main/cheatsheets/typescript.md#e-literal-values), above. TypeScript will limit the inputs for you, and you don't have to reference the enum to see what they are.
+```
+enum Status {
+    todo = "todo",
+    inProgress = "in-progress",
+    done = "done"
+}
+  
+type Status = "todo" | "in-progress" | "done"
+
+```
 #
-### 5: SET UP
+### 6: SET UP
 [Official Installation Instructions](https://www.typescriptlang.org/download)
   
 Install the TypeScript compiler globally and run it:
@@ -312,7 +345,7 @@ $ npx tsc
 TypeScript files have the `.ts` extension. Running the compiler will create ```.js``` files next to your ```.ts``` files, although instructions for configuring this are included below.
   
 #
-### 6: CONFIGURATION - tsconfig.json
+### 7: CONFIGURATION - tsconfig.json
 
 #### A: File Creation and Initial Set Up
 In the root of your app, create a file called `tsconfig.json`.
@@ -375,3 +408,39 @@ If a library you want to use does not, you can go to the [NPM website](https://w
 
 Copy the command to into the terminal and run it in the root folder of your app. 
 #  
+
+### 8: KEYOF
+
+Where an object has explicit keys, using this creates a union type with those keys. In the example below, `keyof Person` creates a union type of "name" and "age"; other strings will not be allowed.
+  
+```
+interface Person {
+  name: string;
+  age: number;
+}
+
+function getValue(source: Person, property: keyof Person) {
+  return source[property];
+}
+  
+let person = {
+  name: "Zan",
+  age: 21
+};
+  
+getValue(person, "name"); // if "name" is misspelled (e.g. "nmae" or "naem") TypeScript lets you know!
+
+```
+Better yet, the function above can be refactored into a generic function, as below:
+```
+function getValue<T>(source: T, property: keyof T) {
+  return source[property];
+}
+```
+The `keyof` operator can also be used to constrain generic types: 
+```
+function getValue<T, U extends keyof T>(source: T, property: U) {
+  return source[property];
+}
+```
+#
